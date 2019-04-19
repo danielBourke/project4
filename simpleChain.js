@@ -36,7 +36,7 @@ class Blockchain{
     this.chain = level("./chaindata");
 
     this.chain.put(0,JSON.stringify(Block.genisis()))
-  }
+  } 
   
 
   getBlockHeight(){
