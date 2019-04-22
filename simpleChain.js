@@ -17,14 +17,19 @@ class Block{
      this.time = 0,
      this.previousBlockHash = ""
     }
-    static createGensisBlock() {
-    
-     let genblock =  new this("Genesis block").hash = SHA256(JSON.stringify(new this("Genesis block"))).toString();
-   console.log("this is the genisis block")
+    // static createGensisBlock() {
 
-      return genblock; 
-    }
-}
+    //   let genblock =  new this("Genesis block")
+    //   genblock.hash = SHA256(JSON.stringify(genblock).toString());
+    //   genblock.height = 0;
+    //   genblock.time = new Date().getTime().toString().slice(0,-3);
+    //   console.log("this is the genisis block")
+
+    //    return genblock;
+     }
+//  }
+//  const myGenBlock = Block.createGensisBlock()
+//  console.log(myGenBlock)
 
 /* ===== Blockchain Class ==========================
 |  Class with a constructor for new blockchain    |
@@ -34,8 +39,9 @@ class Blockchain{
   constructor(){
     
     this.chain = level("./chaindata");
-
-    this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
+    // this.addBlock(new Block("First block in the chain - Genesis block"));
+  // this.getBlockHeight() === 0 ? this.chain.put(0,JSON.stringify(Block.createGensisBlock())) : null
+    // this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
   } 
   
 
@@ -48,13 +54,27 @@ class Blockchain{
           reject(err)
       })
       .on('close',  () => {
-          resolve(count);
+        console.log('Block Height' + count);
+          resolve(count-1);
       });
   });
   }
-
+  // let genblock =  new this("Genesis block")
+  //   genblock.hash = SHA256(JSON.stringify(genblock).toString());
+  //   genblock.height = 0;
+  //   genblock.time = new Date().getTime().toString().slice(0,-3);
 
 async addBlock(newBlock){
+ let lengthOfChain = await this.getBlockHeight();
+ let genblock =  new Block("Genesis block")
+ genblock.hash = SHA256(JSON.stringify(genblock).toString());
+ genblock.time = new Date().getTime().toString().slice(0,-3);
+ genblock.height = 0;
+ if(lengthOfChain === 0){
+   this.chain.put(0,JSON.stringify(new Block.genblock));
+   console.log("genisis block added ")
+ }
+
 
   let createdBlock = await this.createBlock(newBlock)
       this.chain.put(createdBlock.height,JSON.stringify(createdBlock))
@@ -90,7 +110,7 @@ async addBlock(newBlock){
     // validate block
    async validateBlock(blockHeight){
       // get block object
-      let block = this.getBlock(blockHeight);
+      let block = await this.getBlock(blockHeight);
       // get block hash
       let blockHash = block.hash;
       // remove block hash to test block integrity
@@ -117,10 +137,12 @@ async addBlock(newBlock){
       let lengthChain = await this.getBlockHeight();
       for (var i = 0; i < lengthChain-1; i++) {
         // validate block
-        if (!this.validateBlock(i))errorLog.push(i);
+        if ( await !this.validateBlock(i))errorLog.push(i);
         // compare blocks hash link
-        let blockHash = await this.getBlock[i].hash;
-        let previousHash = await this.getBlock[i+1].previousBlockHash;
+        let currentBlock = await this.getBlock(i);
+        let previousBlock = await this.getBlock(i+1);
+        let blockHash = currentBlock.hash;
+        let prevHash = previousBlock.previousBlockHash;
         if (blockHash!==previousHash) {
           errorLog.push(i);
         }
@@ -149,3 +171,5 @@ const myBlockchain = new Blockchain();
      });
  }, 10000);
 })(0);
+module.exports = Block;
+module.exports = Blockchain;
