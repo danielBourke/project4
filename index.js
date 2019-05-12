@@ -7,7 +7,6 @@ const bitcoinLib = require('bitcoinjs-lib');
 const bitcoinMsg = require('bitcoinjs-message');
 const app = express();
 
-const Blockchain = new Blockchain();
 
 app.use(bodyParser.json());
 
@@ -86,23 +85,23 @@ let block = new Block(body);
 })
 
 app.get("/block/[HEIGHT]", (req,res)=> {
-  getLevelDBData(key){
-    let self = this;
-    return new Promise(function(resolve, reject) {
-        self.db.get(key, (err, value) => {
-            if(err){
-                if (err.type == 'NotFoundError') {
-                    resolve(undefined);
-                }else {
-                    console.log('Block ' + key + ' get failed', err);
-                    reject(err);
-                }
-            }else {
-                resolve(value);
-            }
-        });
-    });
-}
+//   getLevelDBData(key){
+//     let self = this;
+//     return new Promise(function(resolve, reject) {
+//         self.db.get(key, (err, value) => {
+//             if(err){
+//                 if (err.type == 'NotFoundError') {
+//                     resolve(undefined);
+//                 }else {
+//                     console.log('Block ' + key + ' get failed', err);
+//                     reject(err);
+//                 }
+//             }else {
+//                 resolve(value);
+//             }
+//         });
+//     });
+// }
 })
 
 const PORT = 8000;
