@@ -16,7 +16,7 @@ let starRes = [];
 
 let delay = 400;
 
-let signature = bitcoinMessage.sign(message, privateKey, keyPair.compressed)
+// let signature = bitcoinMessage.sign(message, privateKey, keyPair.compressed)
 
 
 app.get('/block/:height', async (req, res) => {
@@ -45,8 +45,8 @@ timeoutRequests[request.walletAddress]=setTimeout(function(){
  let response = {
    address: address,
    requestTimeStamp: `${getTime(new Date())}`,
-   message: `this is the validation of ${adress}`,
-   validationWindow: 300
+   message: `[${adress}]:[timeStamp]:starRegistry`,
+   validationWindow: timeLeft
  };
 
  res.json(response);
@@ -85,23 +85,23 @@ let block = new Block(body);
 })
 
 app.get("/block/[HEIGHT]", (req,res)=> {
-//   getLevelDBData(key){
-//     let self = this;
-//     return new Promise(function(resolve, reject) {
-//         self.db.get(key, (err, value) => {
-//             if(err){
-//                 if (err.type == 'NotFoundError') {
-//                     resolve(undefined);
-//                 }else {
-//                     console.log('Block ' + key + ' get failed', err);
-//                     reject(err);
-//                 }
-//             }else {
-//                 resolve(value);
-//             }
-//         });
-//     });
-// }
+  getLevelDBData(key){
+    let self = this;
+    return new Promise(function(resolve, reject) {
+        self.db.get(key, (err, value) => {
+            if(err){
+                if (err.type == 'NotFoundError') {
+                    resolve(undefined);
+                }else {
+                    console.log('Block ' + key + ' get failed', err);
+                    reject(err);
+                }
+            }else {
+                resolve(value);
+            }
+        });
+    });
+}
 })
 
 const PORT = 8000;
