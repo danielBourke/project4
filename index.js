@@ -85,7 +85,7 @@ let block = new Block(body);
 })
 
 app.get("/block/[HEIGHT]", (req,res)=> {
-  getLevelDBData(key){
+  getLevelDBData = (key) => {
     let self = this;
     return new Promise(function(resolve, reject) {
         self.db.get(key, (err, value) => {
