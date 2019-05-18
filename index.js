@@ -38,8 +38,8 @@ let timeElapse = (new Date().getTime().toString().slice(0,-3)) - req.requestTime
 let timeLeft = (TimeoutRequestsWindowTime/1000) - timeElapse;
 req.validationWindow = timeLeft;
 
-timeoutRequests[request.walletAddress]=setTimeout(function(){
-   self.removeValidationRequest(request.walletAddress) }, TimeoutRequestsWindowTime );
+timeoutRequests[req.walletAddress]=setTimeout(function(){
+   self.removeValidationRequest(req.walletAddress) }, TimeoutRequestsWindowTime );
 
  
  let response = {
