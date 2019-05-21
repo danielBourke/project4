@@ -16,7 +16,7 @@ let starRes = [];
 
 let delay = 400;
 
-blockchain = new Blockchain;
+let blockchain = new Blockchain();
 
 // let signature = bitcoinMessage.sign(message, privateKey, keyPair.compressed)
 // let BlockChain = await new  Blockchain()
@@ -28,7 +28,7 @@ blockchain = new Blockchain;
     app.get("/block/:height", async (req, res) => {
         if(req.params.height) {
             const height = parseInt(req.params.height);
-            let block = await this.blockchain.getBlockByHeight(height);
+            let block = await blockchain.getBlockByHeight(height);
             if(block){
                 return res.status(200).json(block);
             } else {
