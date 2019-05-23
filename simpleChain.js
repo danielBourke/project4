@@ -59,6 +59,8 @@ class Blockchain{
       });
   });
   }
+
+   
   // let genblock =  new this("Genesis block")
   //   genblock.hash = SHA256(JSON.stringify(genblock).toString());
   //   genblock.height = 0;
@@ -82,6 +84,8 @@ async addBlock(newBlock){
   }
   // Add new block
  async createBlock(newBlock) {
+
+  
 
   let blockHeight = await this.getBlockHeight();
      let lastBlock = await this.getBlock(blockHeight-1)
@@ -158,18 +162,17 @@ async addBlock(newBlock){
 
 
 
-const myBlockchain = new Blockchain();
+let myBlockchain = new Blockchain();
 
-(function theLoop (i) {
- setTimeout(function () {
+// (function theLoop (i) {
+//  setTimeout(function () {
 
-     let blockTest = new Block("Test Block -"  + (i + 1));
-     myBlockchain.addBlock(blockTest).then((result) => {
-         console.log(result);
-         i++;
-         if (i < 10) theLoop(i);
-     });
- }, 10000);
-})(0);
-module.exports = Block;
+//      let blockTest = new Block("Test Block -"  + (i + 1));
+//      myBlockchain.addBlock(blockTest).then((result) => {
+//          console.log(result);
+//          i++;
+//          if (i < 10) theLoop(i);
+//      });
+//  }, 10000);
+// })(0);
 module.exports = Blockchain;

@@ -1,7 +1,6 @@
     
 const express = require('express');
 const bodyParser = require('body-parser');
-const Block  = require('./simpleChain');
 const Blockchain = require('./simpleChain');
 const bitcoinLib = require('bitcoinjs-lib');
 const bitcoinMsg = require('bitcoinjs-message');
@@ -28,7 +27,7 @@ let blockchain = new Blockchain();
     app.get("/block/:height", async (req, res) => {
         if(req.params.height) {
             const height = parseInt(req.params.height);
-            let block = await blockchain.getBlockByHeight(height);
+            let block = await blockchain.getBlockHeight(height);
             if(block){
                 return res.status(200).json(block);
             } else {
