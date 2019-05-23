@@ -39,9 +39,9 @@ class Blockchain{
   constructor(){
     
     this.chain = level("./chaindata");
-    // this.addBlock(new Block("First block in the chain - Genesis block"));
+    this.addBlock(new Block("First block in the chain - Genesis block"));
   // this.getBlockHeight() === 0 ? this.chain.put(0,JSON.stringify(Block.createGensisBlock())) : null
-    // this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
+  //   this.chain.put(0,JSON.stringify(Block.createGensisBlock()))
   } 
   
 
@@ -162,7 +162,7 @@ async addBlock(newBlock){
 
 
 
-let myBlockchain = new Blockchain();
+// let myBlockchain = new Blockchain();
 
 // (function theLoop (i) {
 //  setTimeout(function () {
