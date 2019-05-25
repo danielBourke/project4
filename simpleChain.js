@@ -73,9 +73,9 @@ async addBlock(newBlock){
  genblock.time = new Date().getTime().toString().slice(0,-3);
  genblock.height = 0;
  if(lengthOfChain === 0){
-   this.chain.put(0,JSON.stringify(new Block.genblock));
-   console.log("genisis block added ")
- }
+  this.chain.put(0,JSON.stringify(Block.genblock));
+  console.log("genisis block added ")
+}
 
 
   let createdBlock = await this.createBlock(newBlock)
