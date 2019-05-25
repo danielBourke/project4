@@ -39,6 +39,16 @@ let blockchain = new Blockchain();
 
     });
 
+    app.get("/block", async (req,res) => {
+        
+            const height = parseInt(req.params.height);
+            let block = await blockchain.getBlockHeight(height);
+
+            res.json(height)
+          
+        
+    })
+
 //  res.send(json(Blockchain.getBlock(req.params)));
 // });
 
