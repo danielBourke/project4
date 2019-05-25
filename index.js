@@ -25,29 +25,25 @@ let blockchain = new Blockchain();
 // res.json(Blockchain.getBlock(req.params.blockHeight))
 // getBlockByHeight() 
     app.get("/block/:height", async (req, res) => {
-        if(req.params.height) {
-            const height = parseInt(req.params.height);
-            let block = await blockchain.getBlockHeight(height);
-            if(block){
-                return res.status(200).json(block);
-            } else {
-                return res.status(404).send("Block Not Found!");
-            }
-        } else {
-            return res.status(404).send("Block Not Found! Review the Parameters!");
-        }
+        // if(req.params.height) {
+        //     const height = parseInt(req.params.height);
+        //     let block = await blockchain.getBlockHeight(height);
+        //     if(block){
+        //         return res.status(200).json(block);
+        //     } else {
+        //         return res.status(404).send("Block Not Found!");
+        //     }
+        // } else {
+        //     return res.status(404).send("Block Not Found! Review the Parameters!");
+        // }
+
+        const height = parseInt(req.params.height);
+        let block = await blockchain.getBlockHeight(height);
+
+        res.json(height)
 
     });
 
-    app.get("/block", async (req,res) => {
-        
-            const height = parseInt(req.params.height);
-            let block = await blockchain.getBlockHeight(height);
-
-            res.json(height)
-          
-        
-    })
 
 //  res.send(json(Blockchain.getBlock(req.params)));
 // });
