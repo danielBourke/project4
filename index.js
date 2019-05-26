@@ -25,22 +25,17 @@ let blockchain = new Blockchain();
 // res.json(Blockchain.getBlock(req.params.blockHeight))
 // getBlockByHeight() 
     app.get("/block/:height", async (req, res) => {
-        // if(req.params.height) {
-        //     const height = parseInt(req.params.height);
-        //     let block = await blockchain.getBlockHeight(height);
-        //     if(block){
-        //         return res.status(200).json(block);
-        //     } else {
-        //         return res.status(404).send("Block Not Found!");
-        //     }
-        // } else {
-        //     return res.status(404).send("Block Not Found! Review the Parameters!");
-        // }
-
-        const height = parseInt(req.params.height);
-        let block = await blockchain.getBlockHeight(height);
-
-        res.json(height)
+        if(req.params.height) {
+            const height = parseInt(req.params.height);
+        let block = await blockchain.getBlock(height);
+            if(block){
+                return res.status(200).json(block);
+            } else {
+                return res.status(404).send("Block Not Found!");
+            }
+        } else {
+            return res.status(404).send("Block Not Found! Review the Parameters!");
+        }
 
     });
 
@@ -50,84 +45,84 @@ let blockchain = new Blockchain();
 
 
 
-// app.post('/block', async (req, res) => {
+app.post('/addblock', async (req, res) => {
   
-//   await Blockchain.addBlock(new Block(req.body));
-//   return res.sendStatus(201);
-// });
+ const newBlock =  await Blockchain.addBlock(new Block(req.body));
+  return res.send(newBlock);
+});
 
-// app.post("/requestValidation", async(req, res) => {
-// let address =  await req.body.address;
-// const TimeoutRequestsWindowTime = 5*60*1000;
-// let timeElapse = (new Date().getTime().toString().slice(0,-3)) - req.requestTimeStamp;
-// let timeLeft = (TimeoutRequestsWindowTime/1000) - timeElapse;
-// req.validationWindow = timeLeft;
+app.post("/requestValidation", async(req, res) => {
+let address =  await req.body.address;
+const TimeoutRequestsWindowTime = 5*60*1000;
+let timeElapse = (new Date().getTime().toString().slice(0,-3)) - req.requestTimeStamp;
+let timeLeft = (TimeoutRequestsWindowTime/1000) - timeElapse;
+req.validationWindow = timeLeft;
 
-// timeoutRequests[req.walletAddress]=setTimeout(function(){
-//    self.removeValidationRequest(req.walletAddress) }, TimeoutRequestsWindowTime );
+timeoutRequests[req.walletAddress]=setTimeout(function(){
+   self.removeValidationRequest(req.walletAddress) }, TimeoutRequestsWindowTime );
 
  
-//  let response = {
-//    address: address,
-//    requestTimeStamp: `${getTime(new Date())}`,
-//    message: `[${adress}]:[timeStamp]:starRegistry`,
-//    validationWindow: timeLeft
-//  };
+ let response = {
+   address: address,
+   requestTimeStamp: `${getTime(new Date())}`,
+   message: `[${adress}]:[timeStamp]:starRegistry`,
+   validationWindow: timeLeft
+ };
 
-//  res.json(response);
+ res.json(response);
 
-// })
+})
 
-// app.post("/message-signature/validate", async(req,res) => {
-//   let address = req.body.address;
-//   // let signiture = req.body.signature;
-//   let isValid = bitcoinMsg.verify(message, address, signature);
+app.post("/message-signature/validate", async(req,res) => {
+  let address = req.body.address;
+  // let signiture = req.body.signature;
+  let isValid = bitcoinMsg.verify(message, address, signature);
 
-//   res.send.json({
-//     "registerStar": true,
-//     "status": {
-//         "address": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
-//         "requestTimeStamp": "1541605128",
-//         "message": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL:1541605128:starRegistry",
-//         "validationWindow": 200,
-//         "messageSignature": true
-//     }
-//   })
-// })
+  res.send.json({
+    "registerStar": true,
+    "status": {
+        "address": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
+        "requestTimeStamp": "1541605128",
+        "message": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL:1541605128:starRegistry",
+        "validationWindow": 200,
+        "messageSignature": true
+    }
+  })
+})
 
-// app.post("./block/:id", (req,res) => {
-//   let body = {
-//     address: req.body.address,
-//     star: {
-//               ra: RA,
-//               dec: DEC,
-//               mag: MAG,
-//               cen: CEN,
-//               story: Buffer(starStory).toString('hex')
-//       }
-// };
-// let block = new Block(body);
-// })
+app.post("./block/:id", (req,res) => {
+  let body = {
+    address: req.body.address,
+    star: {
+              ra: RA,
+              dec: DEC,
+              mag: MAG,
+              cen: CEN,
+              story: Buffer(starStory).toString('hex')
+      }
+};
+let block = new Block(body);
+})
 
-// app.get("/block/[HEIGHT]", (req,res)=> {
-//   getLevelDBData = (key) => {
-//     let self = this;
-//     return new Promise(function(resolve, reject) {
-//         self.db.get(key, (err, value) => {
-//             if(err){
-//                 if (err.type == 'NotFoundError') {
-//                     resolve(undefined);
-//                 }else {
-//                     console.log('Block ' + key + ' get failed', err);
-//                     reject(err);
-//                 }
-//             }else {
-//                 resolve(value);
-//             }
-//         });
-//     });
-// }
-// })
+app.get("/block/[HEIGHT]", (req,res)=> {
+  getLevelDBData = (key) => {
+    let self = this;
+    return new Promise(function(resolve, reject) {
+        self.db.get(key, (err, value) => {
+            if(err){
+                if (err.type == 'NotFoundError') {
+                    resolve(undefined);
+                }else {
+                    console.log('Block ' + key + ' get failed', err);
+                    reject(err);
+                }
+            }else {
+                resolve(value);
+            }
+        });
+    });
+}
+})
 
 const PORT = 8080;
 app.listen(PORT, () => console.log(`App running port ${PORT}!`));
