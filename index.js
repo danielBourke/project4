@@ -53,19 +53,16 @@ app.post('/addblock', async (req, res) => {
 
 app.post("/requestValidation", async(req, res) => {
 let address =  await req.body.address;
-const TimeoutRequestsWindowTime = 5*60*1000;
+const TimeoutRequestsWindowTime = Date.now() - (5 * 60 * 1000)
 let timeElapse = (new Date().getTime().toString().slice(0,-3)) - req.requestTimeStamp;
 let timeLeft = (TimeoutRequestsWindowTime/1000) - timeElapse;
-req.validationWindow = timeLeft;
 
-timeoutRequests[req.walletAddress]=setTimeout(function(){
-   self.removeValidationRequest(req.walletAddress) }, TimeoutRequestsWindowTime );
-
+const timestamp = Date.now()
  
  let response = {
    address: address,
-   requestTimeStamp: `${getTime(new Date())}`,
-   message: `[${adress}]:[timeStamp]:starRegistry`,
+   requestTimeStamp: `${(new Date())}`,
+   message: `[${adress}]:${timeStamp}:starRegistry`,
    validationWindow: timeLeft
  };
 
@@ -76,7 +73,7 @@ timeoutRequests[req.walletAddress]=setTimeout(function(){
 app.post("/message-signature/validate", async(req,res) => {
   let address = req.body.address;
   // let signiture = req.body.signature;
-  let isValid = bitcoinMsg.verify(message, address, signature);
+  let sign = bitcoinMsg.verify(message, address, signature);
 
   res.send.json({
     "registerStar": true,
@@ -85,7 +82,7 @@ app.post("/message-signature/validate", async(req,res) => {
         "requestTimeStamp": "1541605128",
         "message": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL:1541605128:starRegistry",
         "validationWindow": 200,
-        "messageSignature": true
+        "messageSignature": sign
     }
   })
 })
