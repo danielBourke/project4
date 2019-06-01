@@ -1,5 +1,5 @@
-2019/06/01-16:54:25.177 6a20 Recovering log #99
-2019/06/01-16:54:25.177 6a20 Level-0 table #101: started
-2019/06/01-16:54:25.183 6a20 Level-0 table #101: 330 bytes OK
-2019/06/01-16:54:25.193 6a20 Delete type=0 #99
-2019/06/01-16:54:25.194 6a20 Delete type=3 #97
+2019/06/01-20:36:47.203 57dc Recovering log #8
+2019/06/01-20:36:47.203 57dc Level-0 table #10: started
+2019/06/01-20:36:47.205 57dc Level-0 table #10: 330 bytes OK
+2019/06/01-20:36:47.212 57dc Delete type=0 #8
+2019/06/01-20:36:47.212 57dc Delete type=3 #6
