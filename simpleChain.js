@@ -20,7 +20,7 @@ class Block{
     static createGensisBlock() {
 
       let genblock =  new this("Genesis block")
-      genblock.hash = SHA256(JSON.stringify(genblock).toString());
+      genblock.hash = SHA256(JSON.stringify(genblock)).toString();
       genblock.height = 0;
       genblock.time = new Date().getTime().toString().slice(0,-3);
       console.log("this is the genisis block")
