@@ -9,7 +9,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-let mempool = [];
+let memPool = [];
 let timeoutRequests = [];
 let starRes = [];
 
