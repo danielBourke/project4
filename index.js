@@ -149,36 +149,36 @@ app.post("/requestValidation",(req,res)=>{
 
 // })
 
-// app.post("/message-signature/validate", async(req,res) => {
-//   let address = req.body.address;
-//   // let signiture = req.body.signature;
-//   let sign = bitcoinMsg.verify(message, address, signature);
+app.post("/message-signature/validate", async(req,res) => {
+  let address = req.body.address;
+  // let signiture = req.body.signature;
+  let sign = bitcoinMsg.verify(message, address, signature);
 
-//   res.send.json({
-//     "registerStar": true,
-//     "status": {
-//         "address": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
-//         "requestTimeStamp": "1541605128",
-//         "message": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL:1541605128:starRegistry",
-//         "validationWindow": 200,
-//         "messageSignature": sign
-//     }
-//   })
-// })
+  res.send.json({
+    "registerStar": true,
+    "status": {
+        "address": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
+        "requestTimeStamp": "1541605128",
+        "message": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL:1541605128:starRegistry",
+        "validationWindow": 200,
+        "messageSignature": sign
+    }
+  })
+})
 
-// app.post("./block/:id", (req,res) => {
-//   let body = {
-//     address: req.body.address,
-//     star: {
-//               ra: RA,
-//               dec: DEC,
-//               mag: MAG,
-//               cen: CEN,
-//               story: Buffer(starStory).toString('hex')
-//       }
-// };
-// let block = new Block(body);
-// })
+app.post("./block/:id", (req,res) => {
+  let body = {
+    address: req.body.address,
+    star: {
+              ra: RA,
+              dec: DEC,
+              mag: MAG,
+              cen: CEN,
+              story: Buffer(starStory).toString('hex')
+      }
+};
+let block = new Block(body);
+})
 
 // app.get("/block/[HEIGHT]", (req,res)=> {
 //   getLevelDBData = (key) => {
