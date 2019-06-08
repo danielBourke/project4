@@ -149,24 +149,30 @@ app.post("/requestValidation",(req,res)=>{
 
 // })
 
-app.post("/message-signature/validate", async(req,res) => {
-  let address = req.body.address;
-  // let signiture = req.body.signature;
-  let sign = bitcoinMsg.verify(message, address, signature);
-
-  res.send.json({
-    "registerStar": true,
-    "status": {
-        "address": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL",
-        "requestTimeStamp": "1541605128",
-        "message": "19xaiMqayaNrn3x7AjV5cU4Mk5f5prRVpL:1541605128:starRegistry",
-        "validationWindow": 200,
-        "messageSignature": sign
-    }
-  })
+app.post("/message-signature/validate", (req,res) => {
+    let address =  req.body.address;
+  console.log(req.body)
+  let signature =  req.body.signature;
+  let message =  req.body.message;
+    let sign =  bitcoinMsg.verify(message, address, signature);
+    console.log(req.body)
+    res.send({signature,message})
+//   res.json({
+//     "registerStar": true,
+//     "status": {
+//         "address": address,
+//         "requestTimeStamp": Date.now,
+//         "message": {adress: adress, signature: signature},
+//         "validationWindow": 200,
+//         "messageSignature": sign
+        
+//     }
+    
+//   })
+// res.json({status: "works"})
 })
 
-app.post("./block/:id", (req,res) => {
+app.post("./block", (req,res) => {
   let body = {
     address: req.body.address,
     star: {
