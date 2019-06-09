@@ -86,9 +86,9 @@ app.post("/requestValidation",(req,res)=>{
         };
     } else {
         // adjust validationRequest
-        let timeNow = new Date().getTime().toString().slice(0,-3);
-        let timeWindow = timeNow-memPool[address].requestTimeStamp-300;
-        timeWindow <0?memPool[address].validationWindow = - timeWindow: delete memPool[address];
+        let currenttime = new Date().getTime().toString().slice(0,-3);
+        let twindows = currenttime-memPool[address].requestTimeStamp-300;
+        twindows <0?memPool[address].validationWindow = - twindows: delete memPool[address];
     }
  
     memPool[address]?res.json(memPool[address]):res.json("Repeat validation request");
@@ -149,14 +149,14 @@ app.post("/requestValidation",(req,res)=>{
 
 // })
 
-app.post("/message-signature/validate", (req,res) => {
-    let address =  req.body.address;
-  console.log(req.body)
-  let signature =  req.body.signature;
-  let message =  req.body.message;
-    let sign =  bitcoinMsg.verify(message, address, signature);
-    console.log(req.body)
-    res.send({signature,message})
+// app.post("/message-signature/validate", (req,res) => {
+//     let address =  req.body.address;
+//   console.log(req.body)
+//   let signature =  req.body.signature;
+//   let message =  req.body.message;
+//     // let sign =  bitcoinMsg.verify(message, address, signature);
+//     console.log(req.body)
+//     res.send({signature,message})
 //   res.json({
 //     "registerStar": true,
 //     "status": {
@@ -170,20 +170,55 @@ app.post("/message-signature/validate", (req,res) => {
     
 //   })
 // res.json({status: "works"})
-})
+// })
+
+// POST request with address, signature, and message to verify identity
+app.post("/message-signature/validate",(req,res)=>{
+    const{address,signature} = req.body;
+ 
+    if(!address.trim() || !signature.trim()) {
+        res.json("Please,provide address and/or signiture")
+    }
+ 
+    if(memPool[address]) {
+        let currenttime = new Date().getTime().toString().slice(0,-3);
+        let twindows = currenttime-memPool[address].requestTimeStamp-300;
+ 
+        if(twindows > 0){
+            delete memPool[address];
+            res.json("Waiting time exceeded 5 minutes; try again, please!")
+        } else {
+            const verificationResponse ={
+                registerStar: bitcoinMsg.verify(memPool[address].message, address, signature),
+                status: {
+                    messageSignature: bitcoinMsg.verify(memPool[address].message, address, signature),
+                    address,
+                    signature,
+                    message:memPool.message,
+                    validationWindow:-twindows,
+                    requestTimeStamp:memPool[address].requestTimeStamp
+ 
+                }
+            };
+            memPool[address].messageSignature = verificationResponse.status.messageSignature;
+            res.json(verificationResponse);
+        }
+    }
+    res.json(`There is no such approved address as ${address}.`);
+ 
+ })
 
 app.post("./block", (req,res) => {
   let body = {
     address: req.body.address,
     star: {
-              ra: RA,
-              dec: DEC,
-              mag: MAG,
-              cen: CEN,
-              story: Buffer(starStory).toString('hex')
+              ra: star.ra,
+              dec: star.dec,
+              mag: star.mag,
+              cen: star.cen,
+              story: Buffer(star.story).toString('hex')
       }
 };
-let block = new Block(body);
 })
 
 // app.get("/block/[HEIGHT]", (req,res)=> {
@@ -204,6 +239,10 @@ let block = new Block(body);
 //         });
 //     });
 // }
+// })
+
+// app.get("/stars/address:address", async (req,res) => {
+//     const address = req.params.address
 // })
 
 const PORT = 8080;
