@@ -221,29 +221,29 @@ app.post("./block", (req,res) => {
 };
 })
 
-// app.get("/block/[HEIGHT]", (req,res)=> {
-//   getLevelDBData = (key) => {
-//     let self = this;
-//     return new Promise(function(resolve, reject) {
-//         self.db.get(key, (err, value) => {
-//             if(err){
-//                 if (err.type == 'NotFoundError') {
-//                     resolve(undefined);
-//                 }else {
-//                     console.log('Block ' + key + ' get failed', err);
-//                     reject(err);
-//                 }
-//             }else {
-//                 resolve(value);
-//             }
-//         });
-//     });
-// }
-// })
+app.get("/block/[HEIGHT]", (req,res)=> {
+  getLevelDBData = (key) => {
+    let self = this;
+    return new Promise(function(resolve, reject) {
+        self.db.get(key, (err, value) => {
+            if(err){
+                if (err.type == 'NotFoundError') {
+                    resolve(undefined);
+                }else {
+                    console.log('Block ' + key + ' get failed', err);
+                    reject(err);
+                }
+            }else {
+                resolve(value);
+            }
+        });
+    });
+}
+})
 
-// app.get("/stars/address:address", async (req,res) => {
-//     const address = req.params.address
-// })
+app.get("/stars/address:address", async (req,res) => {
+    const address = req.params.address
+})
 
 const PORT = 8080;
 app.listen(PORT, () => console.log(`App running port ${PORT}!`));
