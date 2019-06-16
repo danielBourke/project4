@@ -208,7 +208,7 @@ app.post("/message-signature/validate",(req,res)=>{
  
  })
 
-app.post("./block", (req,res) => {
+app.post("/block", (req,res) => {
   let body = {
     address: req.body.address,
     star: {
