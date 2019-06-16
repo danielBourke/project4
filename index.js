@@ -208,38 +208,52 @@ app.post("/message-signature/validate",(req,res)=>{
  
  })
 
-app.post("/block", (req,res) => {
-  let body = {
-    address: req.body.address,
-    star: {
-              ra: star.ra,
-              dec: star.dec,
-              mag: star.mag,
-              cen: star.cen,
-              story: Buffer(star.story).toString('hex')
-      }
-};
+app.post("/block", async (req,res) => {
+  
+  console.log(req.body)
+  res.json(req.body) 
+  
+  if(!memPool[address] || !memPool[address].messageSignature) {
+        return res.json(`Your address is not validated`);
+    }
+    let notaryData = {
+        address: req.body.address,
+        star: {
+                  ra: req.star.ra,
+                  dec: req.star.dec,
+                  mag: req.star.mag,
+                  cen: req.star.cen,
+                  story: Buffer(req.star.story).toString('hex')
+          }
+        }
+    const minedBlock = await blockchain.addBlock(new Block(notaryData));
+
+    res.json(minedBlock)
+
+    
+    
+
 })
 
-app.get("/block/[HEIGHT]", (req,res)=> {
-  getLevelDBData = (key) => {
-    let self = this;
-    return new Promise(function(resolve, reject) {
-        self.db.get(key, (err, value) => {
-            if(err){
-                if (err.type == 'NotFoundError') {
-                    resolve(undefined);
-                }else {
-                    console.log('Block ' + key + ' get failed', err);
-                    reject(err);
-                }
-            }else {
-                resolve(value);
-            }
-        });
-    });
-}
-})
+// app.get("/block/[HEIGHT]", (req,res)=> {
+//   getLevelDBData = (key) => {
+//     let self = this;
+//     return new Promise(function(resolve, reject) {
+//         self.db.get(key, (err, value) => {
+//             if(err){
+//                 if (err.type == 'NotFoundError') {
+//                     resolve(undefined);
+//                 }else {
+//                     console.log('Block ' + key + ' get failed', err);
+//                     reject(err);
+//                 }
+//             }else {
+//                 resolve(value);
+//             }
+//         });
+//     });
+// }
+// })
 
 app.get("/stars/address:address", async (req,res) => {
     const address = req.params.address
