@@ -210,8 +210,7 @@ app.post("/message-signature/validate",(req,res)=>{
 
 app.post("/block", async (req,res) => {
   
-  console.log(req.body)
-  res.json(req.body) 
+
   
   if(!memPool[address] || !memPool[address].messageSignature) {
         return res.json(`Your address is not validated`);
@@ -257,6 +256,8 @@ app.post("/block", async (req,res) => {
 
 app.get("/stars/address:address", async (req,res) => {
     const address = req.params.address
+
+    res.json(address);
 })
 
 const PORT = 8080;
