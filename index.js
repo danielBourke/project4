@@ -210,23 +210,33 @@ app.post("/message-signature/validate",(req,res)=>{
 
 app.post("/block", async (req,res) => {
   
-
+if(!(star && star.dec && star.ra && star.story)){
+    return res.json("not enough data provided");
+}
   
   if(!memPool[address] || !memPool[address].messageSignature) {
         return res.json(`Your address is not validated`);
     }
-    let notaryData = {
-        address: req.body.address,
-        star: {
-                  ra: req.star.ra,
-                  dec: req.star.dec,
-                  mag: req.star.mag,
-                  cen: req.star.cen,
-                  story: Buffer(req.star.story).toString('hex')
-          }
-        }
-    const minedBlock = await blockchain.addBlock(new Block(notaryData));
 
+    star.story = Buffer.from(star.story, "ascii").toString("hex");
+    const notaryData = {
+        address,
+        star
+    }
+    
+    // let notaryData = {
+    //     address: req.body.address,
+    //     star: {
+    //               ra: req.star.ra,
+    //               dec: req.star.dec,
+    //               mag: req.star.mag,
+    //               cen: req.star.cen,
+    //               story: Buffer(req.star.story).toString('hex')
+    //       }
+    //     }
+    const minedBlock = await blockchain.addBlock(new Block(notaryData));
+    app.delete(memPool[address]);
+    
     res.json(minedBlock)
 
     
@@ -256,9 +266,17 @@ app.post("/block", async (req,res) => {
 
 app.get("/stars/address:address", async (req,res) => {
     const address = req.params.address
+    let block = await blockchain.getBlock(address);
+    if(block){
+       
+         return res.status(200).json(block);
+     } else {
+         return res.status(404).send("Block Not Found!");
+     }
 
-    res.json(address);
 })
+
+
 
 const PORT = 8080;
 app.listen(PORT, () => console.log(`App running port ${PORT}!`));
