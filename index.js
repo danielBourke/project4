@@ -5,7 +5,7 @@ const Blockchain = require('./simpleChain');
 const bitcoinLib = require('bitcoinjs-lib');
 const bitcoinMsg = require('bitcoinjs-message');
 const app = express();
-
+const Block = require("./simpleChain");
 
 app.use(bodyParser.json());
 
@@ -209,8 +209,9 @@ app.post("/message-signature/validate",(req,res)=>{
  })
 
 app.post("/block", async (req,res) => {
-  
-if(!(star && star.dec && star.ra && star.story)){
+   const address = req.body.address
+   const{address,star} = req.body;
+    if(!(star && star.dec && star.ra && star.story)){
     return res.json("not enough data provided");
 }
   
@@ -268,12 +269,10 @@ app.get("/stars/address:address", async (req,res) => {
     const address = req.params.address
     let block = await blockchain.getBlock(address);
     if(block){
-       
          return res.status(200).json(block);
      } else {
          return res.status(404).send("Block Not Found!");
      }
-
 })
 
 
