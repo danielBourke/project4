@@ -209,7 +209,7 @@ app.post("/message-signature/validate",(req,res)=>{
  })
 
 app.post("/block", async (req,res) => {
-   const address = req.body.address
+//    const address = req.body.address
    const{address,star} = req.body;
     if(!(star && star.dec && star.ra && star.story)){
     return res.json("not enough data provided");
