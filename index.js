@@ -36,28 +36,11 @@ let blockchain = new Blockchain();
 //     }
 //     return block;
 //   }
-    app.get("/block/:height", async (req, res) => {
-        if(req.params.height) {
-            const height = parseInt(req.params.height);
 
-
-           let block = await blockchain.getBlock(req.params.height);
-           if(block){
-               block.height.body =  Buffer.from(block.body,"hex").toString();
-                return res.status(200).json(block);
-            } else {
-                return res.status(404).send("Block Not Found!");
-            }
-        } else {
-            return res.status(404).send("Block Not Found! Review the Parameters!");
-        }
-
-    });
 
 
 //  res.send(json(Blockchain.getBlock(req.params)));
 // });
-
 
 
 // app.post('/addblock', async (req, res) => {
@@ -245,25 +228,23 @@ app.post("/block", async (req,res) => {
 
 })
 
-// app.get("/block/[HEIGHT]", (req,res)=> {
-//   getLevelDBData = (key) => {
-//     let self = this;
-//     return new Promise(function(resolve, reject) {
-//         self.db.get(key, (err, value) => {
-//             if(err){
-//                 if (err.type == 'NotFoundError') {
-//                     resolve(undefined);
-//                 }else {
-//                     console.log('Block ' + key + ' get failed', err);
-//                     reject(err);
-//                 }
-//             }else {
-//                 resolve(value);
-//             }
-//         });
-//     });
-// }
-// })
+app.get("/block/:height", async (req, res) => {
+    if(req.params.height) {
+        const height = parseInt(req.params.height);
+
+
+       let block = await blockchain.getBlock(req.params.height);
+       if(block){
+           block.height.body =  Buffer.from(block.body,"hex").toString();
+            return res.status(200).json(block);
+        } else {
+            return res.status(404).send("Block Not Found!");
+        }
+    } else {
+        return res.status(404).send("Block Not Found! Review the Parameters!");
+    }
+
+});
 
 app.get("/stars/address:address", async (req,res) => {
     const address = req.params.address
