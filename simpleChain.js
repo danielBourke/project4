@@ -126,19 +126,21 @@ class Blockchain {
 
 
 
-const myBlockchain = new Blockchain();
+// const myBlockchain = new Blockchain();
 
-(function theLoop (i) {
- setTimeout(function () {
+// (function theLoop (i) {
+//  setTimeout(function () {
 
-     let blockTest = new Block("Test Block -"  + (i + 1));
-     myBlockchain.addBlock(blockTest).then((result) => {
-         console.log(result);
-         i++;
-         if (i < 10) theLoop(i);
-     });
- }, 10000);
-})(0);
+//      let blockTest = new Block("Test Block -"  + (i + 1));
+//      myBlockchain.addBlock(blockTest).then((result) => {
+//          console.log(result);
+//          i++;
+//          if (i < 10) theLoop(i);
+//      });
+//  }, 10000);
+// })(0);
 
-module.exports = Block;
-module.exports = Blockchain;
+module.exports = {
+  Block:Block,
+  Blockchain:Blockchain
+ }

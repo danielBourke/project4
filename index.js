@@ -1,11 +1,14 @@
     
 const express = require('express');
 const bodyParser = require('body-parser');
-const Blockchain = require('./simpleChain');
+// const Blockchain = require('./simpleChain');
 const bitcoinLib = require('bitcoinjs-lib');
 const bitcoinMsg = require('bitcoinjs-message');
 const app = express();
-const Block = require("./simpleChain");
+// const Block = require("./simpleChain");
+const myUtils = require("./simpleChain")
+const Blockchain = myUtils.Blockchain;
+const Block = myUtils.Block;
 
 app.use(bodyParser.json());
 
