@@ -98,6 +98,53 @@ class Blockchain {
        }
    }
 
+   getBlocksByAddress(address) {
+    return new Promise((resolve, reject) => {
+      let foundBlocks = [];
+      this.chain.createReadStream()
+        .on("data", data => {
+          let block = JSON.parse(data.value);
+          if (block.body.address === address) {
+            block.body.star.storyDecoded = Buffer.from(block.body.star.story, 'hex').toString();
+            foundBlocks.push(block);
+          }
+        })
+        .on("error", error => {
+          reject(error);
+        })
+        .on("close", () => {
+          if (foundBlocks.length === 0) {
+            reject("No blocks associated with the given address");
+          } else {
+            resolve(foundBlocks);
+          }
+        });
+    })
+  }
+
+  getBlockByHash(hash) {
+    return new Promise((resolve, reject) => {
+      let blockFound = false;
+      this.chain.createReadStream()
+        .on("data", data => {
+          let block = JSON.parse(data.value);
+          if (block.hash === hash) {
+            blockFound = true;
+            block.body.star.storyDecoded = Buffer.from(block.body.star.story, 'hex').toString();            
+            resolve(block);
+          }
+        })
+        .on("error", error => {
+          reject(error);
+        })
+        .on("close", () => {
+          if (!blockFound)
+            reject("No block found with the given hash");
+        })
+    });
+  }
+
+
   // Validate blockchain
    async validateChain(){
      let errorLog = [];

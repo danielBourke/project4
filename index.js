@@ -221,8 +221,8 @@ app.post("/block", async (req,res) => {
     //               story: Buffer(req.star.story).toString('hex')
     //       }
     //     }
-    const minedBlock = await blockchain.addBlock(new Block(notaryData));
-    app.delete(memPool[address]);
+    minedBlock.body.star.storyDecoded = Buffer.from(minedBlock.body.star.story, 'hex').toString();
+    delete memPool[address];
     
     res.json(minedBlock)
 
@@ -238,7 +238,7 @@ app.get("/block/:height", async (req, res) => {
 
        let block = await blockchain.getBlock(req.params.height);
        if(block){
-           block.height.body =  Buffer.from(block.body,"hex").toString();
+        block.body.star.storyDecoded = Buffer.from(block.body.star.story, 'hex').toString();
             return res.status(200).json(block);
         } else {
             return res.status(404).send("Block Not Found!");
@@ -249,16 +249,28 @@ app.get("/block/:height", async (req, res) => {
 
 });
 
-app.get("/stars/address:address", async (req,res) => {
-    const address = req.params.address
-    let block = await blockchain.getBlock(address);
-    if(block){
-         return res.status(200).json(block);
-     } else {
-         return res.status(404).send("Block Not Found!");
-     }
-})
+app.get("/stars/address::address", async (req, res) => {
+    const address = req.params.address;
+    try {
+        let blocks = await blockchain.getBlocksByAddress(address);
+        return res.status(200).json(blocks);
+    } catch (e) {
+        console.log(e);
+        return res.status(404).send("Blocks Not Found!");
+    }
+});
 
+
+app.get("/stars/hash::hash", async (req, res) => {
+    const hash = req.params.hash
+    try {
+        let block = await blockchain.getBlockByHash(hash);
+        return res.status(200).json(block);
+    } catch (e) {
+        console.log(e);
+        return res.status(404).send("Block Not Found!");
+    }
+});
 
 
 const PORT = 8080;
