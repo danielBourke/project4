@@ -221,6 +221,7 @@ app.post("/block", async (req,res) => {
     //               story: Buffer(req.star.story).toString('hex')
     //       }
     //     }
+    const minedBlock = await blockchain.addBlock(new Block(notaryData));
     minedBlock.body.star.storyDecoded = Buffer.from(minedBlock.body.star.story, 'hex').toString();
     delete memPool[address];
     
